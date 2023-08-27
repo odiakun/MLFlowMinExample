@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mlflow_postgres:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mlflow_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  minio:
+    image: minio/minio
+    container_name: minio_storage
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: anasko
+      MINIO_ROOT_PASSWORD: profRacer12
+    command: server --console-address ":9001" /data
+    
+volumes:
+  postgres_data:
+    driver: local
+  minio_data: 
+    driver: local
